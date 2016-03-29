@@ -5,9 +5,9 @@
  */
 package br.edu.ifpb.pos.pushing.core.channel;
 
+import br.edu.ifpb.pos.pushing.core.Response;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 /**
@@ -15,9 +15,9 @@ import javax.jws.WebService;
  * @author Emanuel Batista da Silva Filho - https://github.com/emanuelbatista
  */
 @WebService
-public interface NotificadorChannel extends Remote{
+public interface ResponseChannel extends Remote{
     
-    @WebMethod
-    public boolean notificar(String session)throws RemoteException;
+    
+    public Response responseResult(String session) throws RemoteException;
     
 }

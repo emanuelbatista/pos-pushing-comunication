@@ -5,7 +5,6 @@
  */
 package br.edu.ifpb.pos.pushing.core.channel;
 
-import br.edu.ifpb.pos.pushing.core.Response;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import javax.jws.WebService;
@@ -17,6 +16,6 @@ import javax.jws.WebService;
 @WebService
 public interface PushingChannel extends Remote{
     
-    public Response pushing(String session) throws RemoteException;
+    public boolean pushing(String session)throws RemoteException;
     
 }

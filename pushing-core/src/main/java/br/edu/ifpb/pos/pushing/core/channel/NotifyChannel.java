@@ -6,7 +6,8 @@
 package br.edu.ifpb.pos.pushing.core.channel;
 
 import java.rmi.Remote;
-import java.rmi.RemoteException;
+import javax.jws.Oneway;
+import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 /**
@@ -14,9 +15,9 @@ import javax.jws.WebService;
  * @author Emanuel Batista da Silva Filho - https://github.com/emanuelbatista
  */
 @WebService
-public interface RegistryChannel extends Remote{
-    
-    public String registry() throws RemoteException;
-    
-    
+public interface NotifyChannel extends Remote{
+ 
+    @Oneway
+    @WebMethod
+    public void notify(String uid);
 }

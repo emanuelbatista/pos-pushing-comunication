@@ -29,6 +29,8 @@ public class RequestChannelImpl implements RequestChannel {
     }
 
     @Override
+    @Oneway
+    @WebMethod
     public void request(Message msg) {
         producer.request(msg);
     }

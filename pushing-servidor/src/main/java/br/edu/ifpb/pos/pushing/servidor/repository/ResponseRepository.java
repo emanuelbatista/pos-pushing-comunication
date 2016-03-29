@@ -17,11 +17,9 @@ import java.util.Map;
 public class ResponseRepository {
 
     private final Map<String, Response> responses;
-    private final IndentificationManager indentificationManager;
 
     private ResponseRepository() {
         this.responses = new HashMap();
-        this.indentificationManager = IndentificationManager.getInstance();
     }
 
     public static ResponseRepository getInstance() {
@@ -37,6 +35,11 @@ public class ResponseRepository {
         responses.put(id, response);
     }
 
+    public Map<String, Response> getResponses() {
+        return responses;
+    }
+
+    
     public Response getResponse(String uid) {
         Response response = responses.get(uid);
         if (response == null) {
@@ -57,7 +60,6 @@ public class ResponseRepository {
         @Override
         public void run() {
             responses.remove(uid);
-            indentificationManager.release(uid);
         }
 
     }

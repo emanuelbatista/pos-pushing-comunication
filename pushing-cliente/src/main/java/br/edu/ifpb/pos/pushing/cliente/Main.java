@@ -6,42 +6,43 @@
 package br.edu.ifpb.pos.pushing.cliente;
 
 import br.edu.ifpb.pos.pushing.core.Message;
+import br.edu.ifpb.pos.pushing.core.Response;
 import br.edu.ifpb.pos.pushing.core.channel.PushingChannel;
-import br.edu.ifpb.pos.pushing.core.channel.RegistryChannel;
 import br.edu.ifpb.pos.pushing.core.channel.RequestChannel;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.MalformedURLException;
-import java.net.Socket;
 import java.util.Scanner;
+import br.edu.ifpb.pos.pushing.core.channel.ResponseChannel;
 
 /**
  *
  * @author Emanuel Batista da Silva Filho - https://github.com/emanuelbatista
  */
 public class Main {
+
     public static void main(String[] args) throws MalformedURLException, IOException {
-        RegistryChannel registryChannel=ChannelManager.getRegistryChannel();
-        RequestChannel requestChannel=ChannelManager.getRequestChannel();
-        PushingChannel pushingChannel=ChannelManager.getPushingChannel();
-        
-        System.out.println("Conectando no notificador...");
-        Socket socket=new Socket("localhost", 7000);
-        String uid=registryChannel.registry();
-        System.out.println("registrado: "+uid);
-        PrintWriter printWriter=new PrintWriter(socket.getOutputStream(),true);
-        printWriter.println(uid);
-        System.out.println("Concectado ao notificador");
-        
+        String idUser = "101A";
+        System.out.println("Id do usuário: " + idUser);
+        String idMensagem = String.valueOf(System.currentTimeMillis());
+        System.out.println("Id Mensagem: " + idMensagem);
+        String id = idUser + ":" + idMensagem;
+        //
+        RequestChannel requestChannel = ChannelManager.getRequestChannel();
+        ResponseChannel responseChannel = ChannelManager.getResponseChannel();
+        PushingChannel pushingChannel = ChannelManager.getPushingChannel();
+
         System.out.println("Enviando a messagem ao servidor");
-        requestChannel.request(new Message(uid, 10));
+        Scanner in = new Scanner(System.in);
+        System.out.print("Digite a Mensagem: ");
+        requestChannel.request(new Message(id, in.nextLine()));
         System.out.println("messagem enviada");
         //
-        Scanner scanner=new Scanner(socket.getInputStream());
-        String respostaNotificacao=scanner.nextLine();
-        System.out.println("Notificado");
-        if(respostaNotificacao.equals("true")){
-            System.out.println(pushingChannel.pushing(uid).getMessage());
+        if (pushingChannel.pushing(id)) {
+            System.out.println("Notificado");
+            Response response=responseChannel.responseResult(id);
+            System.out.println("Resposta: "+response.getMessage());
+
         }
+
     }
 }

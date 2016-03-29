@@ -5,34 +5,33 @@
  */
 package br.edu.ifpb.pos.pushing.servidor.notificador;
 
-import br.edu.ifpb.pos.pushing.core.channel.NotificadorChannel;
+import br.edu.ifpb.pos.pushing.core.channel.NotifyChannel;
+import br.edu.ifpb.pos.pushing.servidor.repository.ResponseRepository;
 import java.net.MalformedURLException;
-import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.TimerTask;
 
 /**
  *
  * @author Emanuel Batista da Silva Filho - https://github.com/emanuelbatista
  */
-public class Notificar extends Thread {
+public class Notificar extends TimerTask {
 
     private String uid;
-    private NotificadorChannel notificadorChannel;
+    private NotifyChannel notifyChannel;
+    private ResponseRepository responseRepository;
 
     public Notificar(String uid) throws MalformedURLException {
         this.uid = uid;
-        notificadorChannel = NotificadorFactory.getInstance();
+        notifyChannel = NotifyFactory.getInstance();
+        responseRepository = ResponseRepository.getInstance();
     }
 
     @Override
     public void run() {
-        try {
-            while (!notificadorChannel.notificar(uid)) {
-                Thread.sleep(10000);
-            }
-        } catch (RemoteException | InterruptedException ex) {
-            Logger.getLogger(Notificar.class.getName()).log(Level.SEVERE, null, ex);
+        if (responseRepository.getResponses().containsKey(uid)) {
+            notifyChannel.notify(uid);
+        } else {
+            this.cancel();
         }
     }
 

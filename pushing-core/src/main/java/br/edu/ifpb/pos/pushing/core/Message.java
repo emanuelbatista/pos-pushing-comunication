@@ -12,21 +12,21 @@ package br.edu.ifpb.pos.pushing.core;
 public class Message {
     
     private String session;
-    private Integer dado;
+    private String dado;
 
     public Message() {
     }
 
-    public Message(String session, Integer dado) {
+    public Message(String session, String dado) {
         this.session = session;
         this.dado = dado;
     }
     
-    public Integer getDado() {
+    public String getDado() {
         return dado;
     }
 
-    public void setDado(Integer dado) {
+    public void setDado(String dado) {
         this.dado = dado;
     }
     
